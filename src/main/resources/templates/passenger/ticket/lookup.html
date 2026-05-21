@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tra cứu vé</title>
+</head>
+<body>
+
+<h1>Tra cứu vé</h1>
+
+<p>
+    <a th:href="@{/passenger/home}">Về trang hành khách</a>
+</p>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+
+<form th:action="@{/passenger/tickets/lookup}" th:object="${ticketLookupRequest}" method="post">
+
+    <div>
+        <label>Mã vé</label>
+        <input type="text" th:field="*{ticketCode}" placeholder="VD: BT202605211745301234">
+        <p th:errors="*{ticketCode}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Số điện thoại</label>
+        <input type="text" th:field="*{phone}" placeholder="VD: 0901234567">
+        <p th:errors="*{phone}" style="color:red"></p>
+    </div>
+
+    <button type="submit">Tra cứu</button>
+</form>
+
+</body>
+</html>
