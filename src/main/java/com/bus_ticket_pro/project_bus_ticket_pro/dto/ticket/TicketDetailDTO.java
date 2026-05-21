@@ -1,5 +1,6 @@
 package com.bus_ticket_pro.project_bus_ticket_pro.dto.ticket;
 
+import com.bus_ticket_pro.project_bus_ticket_pro.enums.BusType;
 import com.bus_ticket_pro.project_bus_ticket_pro.enums.TicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class TicketDetailDTO {
 
     private String plateNumber;
 
-    private String busType;
+    private BusType busType;
 
     private String driverName;
 
