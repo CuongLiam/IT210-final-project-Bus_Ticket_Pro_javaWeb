@@ -12,7 +12,7 @@ import lombok.Setter;
 public class RegisterRequest {
 
     @NotBlank(message = "Tên không được để trống")
-    @Size(min = 4, max = 10, message = "Tên đăng nhập phải từ 4 đến 50 ký tự")
+    @Size(min = 4, max = 50, message = "Tên đăng nhập phải từ 4 đến 50 ký tự")
     private String username;
 
     @NotBlank(message = "Mật khẩu không được để trống")
