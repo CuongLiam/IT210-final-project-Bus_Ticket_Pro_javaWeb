@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm xe</title>
+</head>
+<body>
+
+<h1>Thêm xe mới</h1>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+
+<form th:action="@{/admin/buses/create}" th:object="${busRequest}" method="post">
+
+    <div>
+        <label>Biển số xe</label>
+        <input type="text" th:field="*{plateNumber}">
+        <p th:errors="*{plateNumber}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Loại xe</label>
+        <select th:field="*{busType}">
+            <option value="">-- Chọn loại xe --</option>
+            <option th:each="type : ${busTypes}"
+                    th:value="${type}"
+                    th:text="${type}">
+            </option>
+        </select>
+        <p th:errors="*{busType}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Tổng số ghế</label>
+        <input type="number" th:field="*{totalSeats}">
+        <p th:errors="*{totalSeats}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Tên nhà xe</label>
+        <input type="text" th:field="*{companyName}">
+        <p th:errors="*{companyName}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Tên tài xế</label>
+        <input type="text" th:field="*{driverName}">
+        <p th:errors="*{driverName}" style="color:red"></p>
+    </div>
+
+    <button type="submit">Thêm xe</button>
+</form>
+
+<p>
+    <a th:href="@{/admin/buses}">Quay lại danh sách</a>
+</p>
+
+</body>
+</html>

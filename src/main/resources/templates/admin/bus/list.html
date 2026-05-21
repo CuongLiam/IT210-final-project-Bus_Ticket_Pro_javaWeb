@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý xe</title>
+</head>
+<body>
+
+<h1>Quản lý xe</h1>
+
+<p th:if="${param.created}" style="color:green">Thêm xe thành công</p>
+<p th:if="${param.updated}" style="color:green">Cập nhật xe thành công</p>
+<p th:if="${param.deleted}" style="color:green">Xóa xe thành công</p>
+
+<p>
+  <a th:href="@{/admin/dashboard}">Về Dashboard</a>
+</p>
+
+<p>
+  <a th:href="@{/admin/buses/create}">Thêm xe mới</a>
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Biển số</th>
+    <th>Loại xe</th>
+    <th>Tổng ghế</th>
+    <th>Nhà xe</th>
+    <th>Tài xế</th>
+    <th>Trạng thái</th>
+    <th>Hành động</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="bus : ${buses}">
+    <td th:text="${bus.id}"></td>
+    <td th:text="${bus.plateNumber}"></td>
+    <td th:text="${bus.busType}"></td>
+    <td th:text="${bus.totalSeats}"></td>
+    <td th:text="${bus.companyName}"></td>
+    <td th:text="${bus.driverName}"></td>
+    <td th:text="${bus.active ? 'Hoạt động' : 'Đã xóa'}"></td>
+    <td>
+      <a th:href="@{/admin/buses/edit/{id}(id=${bus.id})}">Sửa</a>
+
+      <form th:action="@{/admin/buses/delete/{id}(id=${bus.id})}"
+            method="post"
+            style="display:inline"
+            onsubmit="return confirm('Bạn có chắc muốn xóa xe này?')">
+        <button type="submit">Xóa</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<form action="/logout" method="post" style="margin-top:20px">
+  <button type="submit">Đăng xuất</button>
+</form>
+
+</body>
+</html>
