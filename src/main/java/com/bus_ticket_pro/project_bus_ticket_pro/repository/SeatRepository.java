@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
+    List<Seat> findByTripIdOrderBySeatNumberAsc(Long tripId);
+
     List<Seat> findByTripId(Long tripId);
 }
