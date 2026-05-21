@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tìm chuyến xe</title>
+</head>
+<body>
+
+<h1>Tìm chuyến xe</h1>
+
+<p>
+    <a th:href="@{/passenger/home}">Về trang hành khách</a>
+</p>
+
+<form th:action="@{/passenger/trips/search}" th:object="${tripSearchRequest}" method="post">
+
+    <div>
+        <label>Điểm đi</label>
+        <select th:field="*{fromLocationId}">
+            <option value="">-- Chọn điểm đi --</option>
+            <option th:each="location : ${locations}"
+                    th:value="${location.id}"
+                    th:text="${location.name}">
+            </option>
+        </select>
+        <p th:errors="*{fromLocationId}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Điểm đến</label>
+        <select th:field="*{toLocationId}">
+            <option value="">-- Chọn điểm đến --</option>
+            <option th:each="location : ${locations}"
+                    th:value="${location.id}"
+                    th:text="${location.name}">
+            </option>
+        </select>
+        <p th:errors="*{toLocationId}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Ngày đi</label>
+        <input type="date" th:field="*{departureDate}">
+        <p th:errors="*{departureDate}" style="color:red"></p>
+    </div>
+
+    <button type="submit">Tìm chuyến</button>
+</form>
+
+<hr>
+
+<h2>Kết quả tìm kiếm</h2>
+
+<p th:if="${trips != null and #lists.isEmpty(trips)}">
+    Không tìm thấy chuyến xe phù hợp.
+</p>
+
+<table th:if="${trips != null and !#lists.isEmpty(trips)}"
+       border="1" cellpadding="8" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tuyến đường</th>
+        <th>Xe</th>
+        <th>Tài xế</th>
+        <th>Giờ khởi hành</th>
+        <th>Giá vé</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="trip : ${trips}">
+        <td th:text="${trip.id}"></td>
+
+        <td>
+            <span th:text="${trip.route.fromLocation.name}"></span>
+            →
+            <span th:text="${trip.route.toLocation.name}"></span>
+        </td>
+
+        <td th:text="${trip.bus.plateNumber + ' - ' + trip.bus.busType}"></td>
+
+        <td th:text="${trip.bus.driverName}"></td>
+
+        <td th:text="${#temporals.format(trip.departureTime, 'dd/MM/yyyy HH:mm')}"></td>
+
+        <td th:text="${#numbers.formatDecimal(trip.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+
+        <td>
+            <a th:href="@{/passenger/trips/{id}/seats(id=${trip.id})}">
+                Xem ghế
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

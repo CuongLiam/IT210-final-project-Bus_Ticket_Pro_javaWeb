@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/trips")
 @RequiredArgsConstructor
-public class TripController {
+public class AdminTripController {
 
     private final TripService tripService;
     private final RouteRepository routeRepository;
@@ -28,9 +28,7 @@ public class TripController {
     @GetMapping
     public String listTrips(Model model) {
         List<Trip> trips = tripService.getAllActiveTrips();
-
         model.addAttribute("trips", trips);
-
         return "admin/trip/list";
     }
 
@@ -38,7 +36,6 @@ public class TripController {
     public String createForm(Model model) {
         model.addAttribute("tripRequest", new TripRequest());
         loadFormData(model);
-
         return "admin/trip/form";
     }
 

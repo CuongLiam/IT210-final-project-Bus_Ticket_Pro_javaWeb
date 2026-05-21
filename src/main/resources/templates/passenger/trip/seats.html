@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sơ đồ ghế</title>
+
+    <style>
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(5, 70px);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .seat {
+            width: 70px;
+            height: 45px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .available {
+            background-color: #8ee28e;
+        }
+
+        .pending {
+            background-color: #f5d76e;
+            cursor: not-allowed;
+        }
+
+        .booked {
+            background-color: #ff7b7b;
+            cursor: not-allowed;
+        }
+
+        .legend {
+            margin-top: 20px;
+        }
+
+        .legend span {
+            display: inline-block;
+            padding: 8px 12px;
+            margin-right: 10px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sơ đồ ghế</h1>
+
+<p>
+    <a th:href="@{/passenger/trips/search}">Quay lại tìm chuyến</a>
+</p>
+
+<h3>Thông tin chuyến</h3>
+
+<p>
+    Tuyến:
+    <strong th:text="${trip.route.fromLocation.name}"></strong>
+    →
+    <strong th:text="${trip.route.toLocation.name}"></strong>
+</p>
+
+<p>
+    Xe:
+    <strong th:text="${trip.bus.plateNumber}"></strong>
+    -
+    <span th:text="${trip.bus.busType}"></span>
+</p>
+
+<p>
+    Tài xế:
+    <strong th:text="${trip.bus.driverName}"></strong>
+</p>
+
+<p>
+    Khởi hành:
+    <strong th:text="${#temporals.format(trip.departureTime, 'dd/MM/yyyy HH:mm')}"></strong>
+</p>
+
+<p>
+    Giá vé:
+    <strong th:text="${#numbers.formatDecimal(trip.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></strong>
+</p>
+
+<div class="legend">
+    <span class="available">Trống</span>
+    <span class="pending">Đang giữ</span>
+    <span class="booked">Đã đặt</span>
+</div>
+
+<div class="seat-map">
+    <form th:each="seat : ${seats}"
+          th:action="@{/passenger/bookings/create}"
+          method="get">
+
+        <input type="hidden" name="tripId" th:value="${trip.id}">
+        <input type="hidden" name="seatId" th:value="${seat.seatId}">
+
+        <button type="submit"
+                class="seat"
+                th:classappend="${seat.status.name() == 'AVAILABLE'} ? ' available' :
+                                (${seat.status.name() == 'PENDING'} ? ' pending' : ' booked')"
+                th:disabled="${seat.status.name() != 'AVAILABLE'}"
+                th:text="${seat.seatNumber}">
+        </button>
+    </form>
+</div>
+
+</body>
+</html>
