@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt vé thành công</title>
+</head>
+<body>
+
+<h1>Đặt vé thành công</h1>
+
+<p>
+    Mã vé của bạn:
+    <strong th:text="${ticketCode}"></strong>
+</p>
+
+<p>
+    Vé đang ở trạng thái <strong>Chờ thanh toán</strong>.
+</p>
+
+<p>
+    Vui lòng lưu mã vé để tra cứu sau.
+</p>
+
+<ul>
+    <li>
+        <a th:href="@{/passenger/trips/search}">Tiếp tục tìm chuyến</a>
+    </li>
+    <li>
+        <a th:href="@{/passenger/home}">Về trang hành khách</a>
+    </li>
+</ul>
+
+</body>
+</html>

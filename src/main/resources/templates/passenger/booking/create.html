@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt vé</title>
+</head>
+<body>
+
+<h1>Đặt vé</h1>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+
+<h3>Thông tin chuyến</h3>
+
+<p>
+    Tuyến:
+    <strong th:text="${trip.route.fromLocation.name}"></strong>
+    →
+    <strong th:text="${trip.route.toLocation.name}"></strong>
+</p>
+
+<p>
+    Xe:
+    <strong th:text="${trip.bus.plateNumber}"></strong>
+    -
+    <span th:text="${trip.bus.busType}"></span>
+</p>
+
+<p>
+    Khởi hành:
+    <strong th:text="${#temporals.format(trip.departureTime, 'dd/MM/yyyy HH:mm')}"></strong>
+</p>
+
+<p>
+    Ghế:
+    <strong th:text="${seat.seatNumber}"></strong>
+</p>
+
+<p>
+    Giá vé:
+    <strong th:text="${#numbers.formatDecimal(trip.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></strong>
+</p>
+
+<hr>
+
+<form th:action="@{/passenger/bookings/create}" th:object="${bookingRequest}" method="post">
+
+    <input type="hidden" th:field="*{tripId}">
+    <input type="hidden" th:field="*{seatId}">
+
+    <div>
+        <label>Họ tên khách</label>
+        <input type="text" th:field="*{customerName}">
+        <p th:errors="*{customerName}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Số điện thoại</label>
+        <input type="text" th:field="*{phone}">
+        <p th:errors="*{phone}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input type="email" th:field="*{email}">
+        <p th:errors="*{email}" style="color:red"></p>
+    </div>
+
+    <button type="submit">Xác nhận đặt vé</button>
+</form>
+
+<p>
+    <a th:href="@{/passenger/trips/{id}/seats(id=${trip.id})}">
+        Quay lại sơ đồ ghế
+    </a>
+</p>
+
+</body>
+</html>

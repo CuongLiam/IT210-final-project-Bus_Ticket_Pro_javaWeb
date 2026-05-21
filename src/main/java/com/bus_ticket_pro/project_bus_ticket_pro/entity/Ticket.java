@@ -24,7 +24,11 @@ public class Ticket extends BaseEntity {
     private String phone;
 
     @Column(length = 100)
-    private String name;
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false)
+    private Trip trip;
 
     @ManyToOne
     @JoinColumn(name = "seat_id", nullable = false)
@@ -36,5 +40,4 @@ public class Ticket extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private TicketStatus status = TicketStatus.PENDING;
-
 }
