@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vé chờ thanh toán</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Danh sách vé chờ thanh toán</h1>
+
+<p>
+    <a th:href="@{/staff/dashboard}">Về Dashboard</a>
+</p>
+
+<p th:if="${param.confirmed}" class="success">
+    Đã xác nhận thanh toán thành công.
+</p>
+
+<p th:if="${param.cancelled}" class="success">
+    Đã hủy vé và giải phóng ghế.
+</p>
+
+<p th:if="${param.error}" class="error" th:text="${param.error}">
+</p>
+
+<p th:if="${#lists.isEmpty(tickets)}">
+    Không có vé nào đang chờ thanh toán.
+</p>
+
+<table th:if="${!#lists.isEmpty(tickets)}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Mã vé</th>
+        <th>Khách hàng</th>
+        <th>SĐT</th>
+        <th>Tuyến</th>
+        <th>Xe</th>
+        <th>Ghế</th>
+        <th>Giờ đi</th>
+        <th>Giá vé</th>
+        <th>Thời gian đặt</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="ticket : ${tickets}">
+        <td th:text="${ticket.id}"></td>
+
+        <td th:text="${ticket.ticketCode}"></td>
+
+        <td th:text="${ticket.customerName}"></td>
+
+        <td th:text="${ticket.phone}"></td>
+
+        <td>
+            <span th:text="${ticket.trip.route.fromLocation.name}"></span>
+            →
+            <span th:text="${ticket.trip.route.toLocation.name}"></span>
+        </td>
+
+        <td>
+            <span th:text="${ticket.trip.bus.plateNumber}"></span>
+            -
+            <span th:text="${ticket.trip.bus.busType}"></span>
+        </td>
+
+        <td th:text="${ticket.seat.seatNumber}"></td>
+
+        <td th:text="${#temporals.format(ticket.trip.departureTime, 'dd/MM/yyyy HH:mm')}"></td>
+
+        <td th:text="${#numbers.formatDecimal(ticket.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+
+        <td th:text="${#temporals.format(ticket.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+
+        <td th:text="${ticket.status}"></td>
+
+        <td>
+            <form th:action="@{/staff/tickets/confirm/{id}(id=${ticket.id})}"
+                  method="post"
+                  style="display:inline"
+                  onsubmit="return confirm('Xác nhận khách đã thanh toán vé này?')">
+                <button type="submit">Xác nhận thanh toán</button>
+            </form>
+
+            <form th:action="@{/staff/tickets/cancel/{id}(id=${ticket.id})}"
+                  method="post"
+                  style="display:inline"
+                  onsubmit="return confirm('Hủy vé này và giải phóng ghế?')">
+                <button type="submit">Hủy vé</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form action="/logout" method="post" style="margin-top:20px">
+    <button type="submit">Đăng xuất</button>
+</form>
+
+</body>
+</html>
