@@ -63,4 +63,17 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             @Param("ticketCode") String ticketCode,
             @Param("phone") String phone
     );
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+            SELECT t FROM Ticket t
+            JOIN FETCH t.trip trip
+            JOIN FETCH t.seat seat
+            WHERE t.ticketCode = :ticketCode
+              AND t.phone = :phone
+            """)
+    Optional<Ticket> findByTicketCodeAndPhoneForUpdate(
+            @Param("ticketCode") String ticketCode,
+            @Param("phone") String phone
+    );
 }

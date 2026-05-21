@@ -129,5 +129,32 @@
     <a th:href="@{/passenger/home}">Về trang hành khách</a>
 </p>
 
+<hr>
+
+<div th:if="${ticket.status.name() != 'CANCELLED'}">
+    <h3>Hủy vé</h3>
+
+    <p>
+        Chỉ có thể hủy vé trước giờ khởi hành ít nhất 12 tiếng.
+    </p>
+
+    <form th:action="@{/passenger/tickets/cancel}"
+          th:object="${cancelTicketRequest}"
+          method="post"
+          onsubmit="return confirm('Bạn có chắc muốn hủy vé này? Ghế sẽ được mở lại cho người khác đặt.')">
+
+        <input type="hidden" th:field="*{ticketCode}">
+        <input type="hidden" th:field="*{phone}">
+
+        <button type="submit">Hủy vé</button>
+    </form>
+</div>
+
+<div th:if="${ticket.status.name() == 'CANCELLED'}">
+    <p style="color:red;font-weight:bold">
+        Vé này đã bị hủy.
+    </p>
+</div>
+
 </body>
 </html>
