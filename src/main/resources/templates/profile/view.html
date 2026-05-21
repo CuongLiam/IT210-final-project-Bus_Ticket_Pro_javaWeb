@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hồ sơ cá nhân</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        td {
+            border: 1px solid #333;
+            padding: 8px;
+        }
+
+        td:first-child {
+            font-weight: bold;
+            width: 160px;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Hồ sơ cá nhân</h1>
+
+<p th:if="${param.updated}" class="success">
+    Cập nhật hồ sơ thành công.
+</p>
+
+<table>
+    <tr>
+        <td>Tài khoản</td>
+        <td th:text="${profile.user.username}"></td>
+    </tr>
+
+    <tr>
+        <td>Vai trò</td>
+        <td th:text="${profile.user.role}"></td>
+    </tr>
+
+    <tr>
+        <td>Họ tên</td>
+        <td th:text="${profile.fullName}"></td>
+    </tr>
+
+    <tr>
+        <td>Số điện thoại</td>
+        <td th:text="${profile.phone}"></td>
+    </tr>
+
+    <tr>
+        <td>Email</td>
+        <td th:text="${profile.email}"></td>
+    </tr>
+
+    <tr>
+        <td>Địa chỉ</td>
+        <td th:text="${profile.address}"></td>
+    </tr>
+</table>
+
+<p>
+    <a th:href="@{/profile/edit}">Cập nhật hồ sơ</a>
+</p>
+
+<p>
+    <a th:if="${profile.user.role.name() == 'ADMIN'}"
+       th:href="@{/admin/dashboard}">
+        Về trang Admin
+    </a>
+
+    <a th:if="${profile.user.role.name() == 'STAFF'}"
+       th:href="@{/staff/dashboard}">
+        Về trang Staff
+    </a>
+
+    <a th:if="${profile.user.role.name() == 'PASSENGER'}"
+       th:href="@{/passenger/home}">
+        Về trang hành khách
+    </a>
+</p>
+
+</body>
+</html>

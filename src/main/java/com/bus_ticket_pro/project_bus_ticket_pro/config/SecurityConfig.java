@@ -78,6 +78,9 @@ public class SecurityConfig {
                                 "/assets/**"
                         ).permitAll()
 
+
+                        .requestMatchers("/profile/**").authenticated()
+
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/staff/**").hasAnyRole("STAFF", "ADMIN")
                         .requestMatchers("/passenger/**").hasRole("PASSENGER")

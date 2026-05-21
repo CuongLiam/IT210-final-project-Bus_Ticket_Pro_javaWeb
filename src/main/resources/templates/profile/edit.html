@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật hồ sơ</title>
+</head>
+<body>
+
+<h1>Cập nhật hồ sơ</h1>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+
+<form th:action="@{/profile/edit}" th:object="${profileRequest}" method="post">
+
+    <div>
+        <label>Họ tên</label>
+        <input type="text" th:field="*{fullName}">
+        <p th:errors="*{fullName}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Số điện thoại</label>
+        <input type="text" th:field="*{phone}">
+        <p th:errors="*{phone}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input type="email" th:field="*{email}">
+        <p th:errors="*{email}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Địa chỉ</label>
+        <input type="text" th:field="*{address}">
+    </div>
+
+    <button type="submit">Lưu thay đổi</button>
+</form>
+
+<p>
+    <a th:href="@{/profile}">Quay lại hồ sơ</a>
+</p>
+
+</body>
+</html>
