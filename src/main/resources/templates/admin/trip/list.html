@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý chuyến xe</title>
+</head>
+<body>
+
+<h1>Quản lý chuyến xe</h1>
+
+<p th:if="${param.created}" style="color:green">Tạo chuyến xe thành công</p>
+<p th:if="${param.updated}" style="color:green">Cập nhật chuyến xe thành công</p>
+<p th:if="${param.deleted}" style="color:green">Xóa chuyến xe thành công</p>
+
+<p>
+    <a th:href="@{/admin/dashboard}">Về Dashboard</a>
+</p>
+
+<p>
+    <a th:href="@{/admin/trips/create}">Tạo chuyến xe mới</a>
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tuyến đường</th>
+        <th>Xe</th>
+        <th>Tài xế</th>
+        <th>Giờ khởi hành</th>
+        <th>Giá vé</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="trip : ${trips}">
+        <td th:text="${trip.id}"></td>
+
+        <td>
+            <span th:text="${trip.route.fromLocation.name}"></span>
+            →
+            <span th:text="${trip.route.toLocation.name}"></span>
+        </td>
+
+        <td th:text="${trip.bus.plateNumber + ' - ' + trip.bus.busType}"></td>
+
+        <td th:text="${trip.bus.driverName}"></td>
+
+        <td th:text="${#temporals.format(trip.departureTime, 'dd/MM/yyyy HH:mm')}"></td>
+
+        <td th:text="${#numbers.formatDecimal(trip.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+
+        <td th:text="${trip.active ? 'Hoạt động' : 'Đã xóa'}"></td>
+
+        <td>
+            <a th:href="@{/admin/trips/edit/{id}(id=${trip.id})}">Sửa</a>
+
+            <form th:action="@{/admin/trips/delete/{id}(id=${trip.id})}"
+                  method="post"
+                  style="display:inline"
+                  onsubmit="return confirm('Bạn có chắc muốn xóa chuyến này?')">
+                <button type="submit">Xóa</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

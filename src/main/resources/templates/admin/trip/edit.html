@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa chuyến xe</title>
+</head>
+<body>
+
+<h1>Sửa chuyến xe</h1>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+
+<form th:action="@{/admin/trips/edit/{id}(id=${tripId})}" th:object="${tripRequest}" method="post">
+
+    <div>
+        <label>Tuyến đường</label>
+        <select th:field="*{routeId}">
+            <option value="">-- Chọn tuyến đường --</option>
+            <option th:each="route : ${routes}"
+                    th:value="${route.id}"
+                    th:text="${route.fromLocation.name + ' → ' + route.toLocation.name + ' (' + route.distanceKm + ' km)'}">
+            </option>
+        </select>
+        <p th:errors="*{routeId}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Xe</label>
+        <select th:field="*{busId}">
+            <option value="">-- Chọn xe --</option>
+            <option th:each="bus : ${buses}"
+                    th:value="${bus.id}"
+                    th:text="${bus.plateNumber + ' - ' + bus.busType + ' - ' + bus.totalSeats + ' ghế'}">
+            </option>
+        </select>
+        <p th:errors="*{busId}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Thời gian khởi hành</label>
+        <input type="datetime-local" th:field="*{departureTime}">
+        <p th:errors="*{departureTime}" style="color:red"></p>
+    </div>
+
+    <div>
+        <label>Giá vé</label>
+        <input type="number" th:field="*{price}">
+        <p th:errors="*{price}" style="color:red"></p>
+    </div>
+
+    <button type="submit">Cập nhật</button>
+</form>
+
+<p>
+    <a th:href="@{/admin/trips}">Quay lại danh sách</a>
+</p>
+
+</body>
+</html>

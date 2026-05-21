@@ -3,6 +3,8 @@ package com.bus_ticket_pro.project_bus_ticket_pro.entity;
 import com.bus_ticket_pro.project_bus_ticket_pro.entity.base.BaseEntity;
 import com.bus_ticket_pro.project_bus_ticket_pro.enums.SeatStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Entity
@@ -12,6 +14,8 @@ import jakarta.persistence.*;
                 @UniqueConstraint(columnNames = {"trip_id", "seat_number"}) // để 1 trip k có 2 seat trùng số
         }
 )
+@Getter
+@Setter
 public class Seat extends BaseEntity {
 
     @ManyToOne
